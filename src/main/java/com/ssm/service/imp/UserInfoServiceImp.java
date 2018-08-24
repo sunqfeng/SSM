@@ -3,6 +3,8 @@ package com.ssm.service.imp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,11 +62,17 @@ public class UserInfoServiceImp implements UserInfoService
 	 * @return 
 	 */
 	@Override
-	public LogMsg zhuceyhservice(UserInfo userinfo)
+	public LogMsg zhuceyhservice( HttpServletRequest request )
 	{
 		// TODO Auto-generated method stub
+		UserInfo userinfo = new UserInfo();
 		LogMsg logmsg = new LogMsg();
 		int maxusercode = userinfodao.max_usercode_userinfo();// 求最大员工id号
+
+		userinfo.setUseriphoncode( request.getParameter("telephone") );
+		userinfo.setPwd(request.getParameter("password"));
+		userinfo.setUsername(request.getParameter("name"));
+
 		userinfo.setUsercode(maxusercode + 1);
 		userinfodao.zhuceyh(userinfo);// 插入表userinfo
 		logmsg = UserInfoAllService(userinfo.getUsername(),userinfo.getPwd()); //判断是否插入成功
