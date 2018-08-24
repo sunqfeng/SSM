@@ -76,6 +76,7 @@ public class UserInfoServiceImp implements UserInfoService
 		userinfo.setUsercode(maxusercode + 1);
 		userinfodao.zhuceyh(userinfo);// 插入表userinfo
 		logmsg = UserInfoAllService(userinfo.getUsername(),userinfo.getPwd()); //判断是否插入成功
+
 		return logmsg ;
 	}
 
