@@ -84,7 +84,6 @@ public class UserInfoController
 		userinfo.setUsername(username);
 		userinfo.setPwd(pwd);
 		userinfo.setUseriphoncode(iuseriphoncode);
-		System.out.println("name" + "|" + username+ " | " + iuseriphoncode + " | "+ pwd );
 
 		userinfoservice.zhuceyhservice(userinfo);
 
