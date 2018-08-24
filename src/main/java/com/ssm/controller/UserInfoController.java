@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ssm.model.LogMsg;
 import com.ssm.model.Student;
 import com.ssm.model.UserInfo;
 import com.ssm.service.UserInfoService;
@@ -36,12 +37,13 @@ public class UserInfoController
 	/**
 	 * 
 	 * 登录到注册页面
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/zhuce")
 	public String zhuce()
 	{
-		return "zhuce";//用户注册页面
+		return "zhuce";// 用户注册页面
 	}
 
 	/**
@@ -53,20 +55,18 @@ public class UserInfoController
 	@NotNull
 	public String checkuserinfo(HttpServletRequest request, Model model)
 	{
+		LogMsg logmsg = new LogMsg();
 		String name = request.getParameter("name");
-		List<UserInfo> userinfo = userinfoservice.UserInfoAllService(name);
-		if (0 == userinfo.size() || null == userinfo)
+		logmsg = userinfoservice.UserInfoAllService(name);
+		if (!logmsg.getCode().equals("0"))
 		{
 			return "error";
-		}
-		if (name.equals(userinfo.get(0).getUsername()))
-		{
-			return "welcome";
 		} else
 		{
-			return "error";
+			return "welcome";
 		}
 	}
+
 	/**
 	 * 注册用户数据到数据库
 	 * 
@@ -77,7 +77,7 @@ public class UserInfoController
 	{
 		UserInfo userinfo = new UserInfo();
 		String username = request.getParameter("name");
-		String useriphoncode = request.getParameter("telephone") ;
+		String useriphoncode = request.getParameter("telephone");
 		int iuseriphoncode = Integer.valueOf(useriphoncode);
 		String pwd = request.getParameter("password");
 
@@ -89,7 +89,5 @@ public class UserInfoController
 
 		return null;
 	}
-	
-
 
 }
