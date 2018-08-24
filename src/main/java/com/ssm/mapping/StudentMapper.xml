@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.StudentDao"> <!-- 这里面写入dao层的地址 -->
+	<!-- select all Student -->
+
+	<!-- 结果集映射：映射实体类属性与数据表字段名 -->
+	<resultMap type="com.ssm.model.Student" id="Student">
+	<id property="id" column="id" />
+	<result property="id" column="ID" />
+	<result property="name" column="NAME" />
+	</resultMap>
+
+
+	<!-- 参数映射：映射实体类属性与数据表字段名 -->
+	<!-- resultMap：resultMap的id ，property：resultMap的property，即实体类中的属性 -->
+	<!-- <parameterMap type="com.ssm.model.Student" id="StudentMapper"> -->
+	<!-- <parameter property="id" resultMap="Student" /> -->
+	<!-- <parameter property="name" resultMap="Student" /> -->
+
+
+	<!-- </parameterMap> -->
+	<select id="StudentAll" resultType="Student">
+		select * from Student
+	</select>
+
+
+	<!-- 保存学生信息 -->
+	<insert id="SaveStudent" parameterType="Student">
+		insert into student(ID,NAME) values(#{id},#{name})
+	</insert>
+	
+	<!--  分页查询学生信息 -->
+	<!-- 分页SQL语句 -->
+	<select id="selectStudentByPage" resultMap="Student">
+		select * from student
+		limit #{startPos},#{pageSize}
+	</select>
+	<!-- 取得记录的总数 -->
+	<select id="getStudentCount" resultType="int">
+		SELECT COUNT(*) FROM  student 
+	</select>
+
+</mapper>
