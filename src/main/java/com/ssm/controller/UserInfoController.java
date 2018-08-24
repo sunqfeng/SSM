@@ -85,11 +85,6 @@ public class UserInfoController
 	public String zhuceyh(HttpServletRequest request, Model model)
 	{
 		LogMsg logmsg = new LogMsg();
-
-		String username = request.getParameter("name");
-		String useriphoncode = request.getParameter("telephone");
-		String pwd = request.getParameter("password");
-
 		logmsg = userinfoservice.zhuceyhservice(request);//注册操作(姓名、密码插入表userinfo)
 		if( !logmsg.getCode().equals("0") )
 		{
