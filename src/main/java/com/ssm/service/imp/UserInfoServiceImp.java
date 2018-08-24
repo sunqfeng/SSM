@@ -34,32 +34,41 @@ public class UserInfoServiceImp implements UserInfoService
 	 */
 	@SuppressWarnings("null")
 	@Override
-	public LogMsg UserInfoAllService(String username)
+	public LogMsg UserInfoAllService(String username,String pwd)
 	{
 		// TODO Auto-generated method stub
 		List<UserInfo> userinfo = new ArrayList<UserInfo>();
 		LogMsg logmsg = new LogMsg();
-		userinfo = userinfodao.UserInfoAll(username);
 
-		if ( (userinfo !=null && !userinfo.isEmpty()) && userinfo.get(0).getUsername().equals(username) )
+		userinfo = userinfodao.UserInfoAll(username);
+		if( (userinfo !=null && !userinfo.isEmpty()) && 
+			(userinfo.get(0).getUsername().equals(username) && userinfo.get(0).getPwd().equals(pwd))) //判断用户以及密码是否正确
 		{
 			logmsg.setCode("0");
 		}
 		else
 		{
 			logmsg.setCode("1101");
-			logmsg.setMsg("用户不存在");
+			logmsg.setMsg("用户不存在或密码错误");
 		}
 		return logmsg;
 	}
 
+	/**
+	 * 处理客户注册函数(插入表userinfo)
+	 * @param userinfo
+	 * @return 
+	 */
 	@Override
-	public void zhuceyhservice(UserInfo userinfo)
+	public LogMsg zhuceyhservice(UserInfo userinfo)
 	{
 		// TODO Auto-generated method stub
+		LogMsg logmsg = new LogMsg();
 		int maxusercode = userinfodao.max_usercode_userinfo();// 求最大员工id号
 		userinfo.setUsercode(maxusercode + 1);
 		userinfodao.zhuceyh(userinfo);// 插入表userinfo
+		logmsg = UserInfoAllService(userinfo.getUsername(),userinfo.getPwd()); //判断是否插入成功
+		return logmsg ;
 	}
 
 }

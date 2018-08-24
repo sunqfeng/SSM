@@ -33,6 +33,7 @@
     <form class="form" id="formid" action="CheckUserInfo" method="post">
       <input type="text" name="name" placeholder="姓名" id="name"/>
       <input type="password"  name="pwd" placeholder="密码" id="pwd"/>
+      <span class="label label-default">${logmsg.msg}</span>
       <label class="checkbox" for="rememberme">
         <input type="checkbox" /> Remember me
       </label> <br />

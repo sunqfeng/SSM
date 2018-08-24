@@ -1,10 +1,12 @@
 package com.ssm.model;
 
+import java.math.BigInteger;
+
 public class UserInfo
 {
 
 	private String username;
-	private Integer useriphoncode;
+	private String useriphoncode;
 	private Integer usercode;
 	private String pwd;
 
@@ -18,7 +20,7 @@ public class UserInfo
 		this.username = username;
 	}
 
-	public Integer getUseriphoncode()
+	public String getUseriphoncode()
 	{
 		return useriphoncode;
 	}
@@ -33,7 +35,7 @@ public class UserInfo
 		this.pwd = pwd;
 	}
 
-	public void setUseriphoncode(Integer useriphoncode)
+	public void setUseriphoncode(String useriphoncode)
 	{
 		this.useriphoncode = useriphoncode;
 	}

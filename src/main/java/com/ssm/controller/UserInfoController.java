@@ -1,7 +1,6 @@
 package com.ssm.controller;
 
-import java.util.List;
-import java.util.Set;
+import java.math.BigInteger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -12,9 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssm.model.LogMsg;
-import com.ssm.model.Student;
 import com.ssm.model.UserInfo;
 import com.ssm.service.UserInfoService;
+
+/*****************************************************
+* 
+* 该文件中的所有函数主要控制页面之间跳转，逻辑处理判断尽量放在service
+* 层进行处理 
+* @author sunqifeng
+*
+*****************************************************/
 
 @Controller
 @RequestMapping("/UserInfoControl")
@@ -22,7 +28,6 @@ public class UserInfoController
 {
 	@Autowired /* 自动注入，这样下面 的 userinfoservice 就可以调用相应的函数了，否则你需要new UserInfoService的对象 */
 	private UserInfoService userinfoservice;
-
 	/**
 	 * 转向登陆页
 	 * 
@@ -57,11 +62,15 @@ public class UserInfoController
 	{
 		LogMsg logmsg = new LogMsg();
 		String name = request.getParameter("name");
-		logmsg = userinfoservice.UserInfoAllService(name);
+		String pwd = request.getParameter("pwd");
+		logmsg = userinfoservice.UserInfoAllService(name,pwd);//判断客户用户名，密码是否正确
+		model.addAttribute("logmsg", logmsg);
 		if (!logmsg.getCode().equals("0"))
 		{
-			return "error";
-		} else
+//			return "error";
+			return "login";
+		} 
+		else
 		{
 			return "welcome";
 		}
@@ -76,18 +85,25 @@ public class UserInfoController
 	public String zhuceyh(HttpServletRequest request, Model model)
 	{
 		UserInfo userinfo = new UserInfo();
+		LogMsg logmsg = new LogMsg();
+
 		String username = request.getParameter("name");
 		String useriphoncode = request.getParameter("telephone");
-		int iuseriphoncode = Integer.valueOf(useriphoncode);
 		String pwd = request.getParameter("password");
 
 		userinfo.setUsername(username);
 		userinfo.setPwd(pwd);
-		userinfo.setUseriphoncode(iuseriphoncode);
+		userinfo.setUseriphoncode(useriphoncode);
 
-		userinfoservice.zhuceyhservice(userinfo);
-
-		return null;
+		logmsg = userinfoservice.zhuceyhservice(userinfo);//注册操作(姓名、密码插入表userinfo)
+		if( !logmsg.getCode().equals("0") )
+		{
+			return "error";
+		}
+		else
+		{
+			return "login";
+		}
 	}
 
 }

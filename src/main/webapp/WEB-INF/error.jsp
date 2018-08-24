@@ -8,5 +8,6 @@
 </head>
 <body>
 	登陆失败
+	<meta http-equiv="Refresh" content="1;url=tologin">
 </body>
 </html>
