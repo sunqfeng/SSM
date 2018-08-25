@@ -58,6 +58,7 @@ public class UserInfoServiceImp implements UserInfoService
 
 	/**
 	 * 处理客户注册函数(插入表userinfo)
+	 * @user sqf
 	 * @param userinfo
 	 * @return 
 	 */
