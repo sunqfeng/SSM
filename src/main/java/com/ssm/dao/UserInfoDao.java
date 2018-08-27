@@ -21,4 +21,6 @@ public interface UserInfoDao
 
 	public int max_usercode_userinfo();
 
+	public int sel_count_userinfo(String username);//返回该用户名在数据库中的数量
+
 }

@@ -61,10 +61,15 @@
                 <input class="btn btn-primary btn-block" type="submit" value="注册"/>
             </div>
             <div class="col-lg-6" style="margin-bottom: 18px">
-                <a class="btn btn-primary btn-block" href="tologin">
+             <a class="btn btn-primary btn-block" href="tologin">
                     已有账号
                 </a>
             </div>
+
+            <div class="text-center">
+			<span class="label label-default">${logmsg.msg}</span> 
+			</div>
+
         </form>
     </div>
 </div>

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.jms.Session;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,9 +46,9 @@ public class UserInfoController
 	char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
 			'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
+
 	@Autowired /* 自动注入，这样下面 的 userinfoservice 就可以调用相应的函数了，否则你需要new UserInfoService的对象 */
 	private UserInfoService userinfoservice;
-
 	/**
 	 * 转向登陆页
 	 * 
@@ -68,8 +67,9 @@ public class UserInfoController
 	 * @return
 	 */
 	@RequestMapping("/zhuce")
-	public String zhuce()
+	public String zhuce(Model model)
 	{
+
 		return "zhuce";// 用户注册页面
 	}
 
@@ -117,11 +117,23 @@ public class UserInfoController
 	public String zhuceyh(HttpServletRequest request, Model model)
 	{
 		LogMsg logmsg = new LogMsg();
+		//鉴于前端水平有限,逻辑判断都放在后台了 ==!
+		if(request.getParameter("telephone") == null ||
+			request.getParameter("password") == null ||
+			request.getParameter("name") == null )
+		{
+			logmsg.setCode("1101");
+			logmsg.setMsg("为空时直接跳转到注册原始页面");
+			return "zhuce";
+		}
+
 		logmsg = userinfoservice.zhuceyhservice(request);// 注册操作(姓名、密码插入表userinfo)
 		if (!logmsg.getCode().equals("0"))
 		{
-			return "error";// 注册失败则跳转到error界面
-		} else
+			model.addAttribute("logmsg", logmsg); //报文信息返回前台
+			return "zhuce";//注册失败则重新跳转到注册界面
+		} 
+		else
 		{
 			return "login"; // 注册成功后直接跳转到登录界面
 		}
@@ -137,7 +149,6 @@ public class UserInfoController
 	@RequestMapping("/yzm")
 	public void yzm( HttpServletRequest request,HttpServletResponse resp,Model model ) throws IOException
 	{
-//		login objlogin = new login();
 		// 定义图像buffer
 		BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics gd = buffImg.getGraphics();
@@ -185,7 +196,7 @@ public class UserInfoController
 		HttpSession session = request.getSession();
 		session.setAttribute("code", randomCode.toString());
 		code = randomCode.toString();//生成验证码
-//		objlogin.setCode(randomCode.toString());
+
 		// 禁止图像缓存。
 		resp.setHeader("Pragma", "no-cache");
 		resp.setHeader("Cache-Control", "no-cache");

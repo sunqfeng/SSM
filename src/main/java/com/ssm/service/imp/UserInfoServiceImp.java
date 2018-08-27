@@ -74,6 +74,16 @@ public class UserInfoServiceImp implements UserInfoService
 		userinfo.setPwd(request.getParameter("password"));
 		userinfo.setUsername(request.getParameter("name"));
 
+		//判断该用户名是否已经重复
+		int Count = userinfodao.sel_count_userinfo(request.getParameter("name"));
+		if( Count>0 )
+		{
+			logmsg.setCode("1103");
+			logmsg.setMsg("该用户已经注册,请选择用户名");
+			return logmsg;
+		}
+
+		//开始进行插入操作
 		userinfo.setUsercode(maxusercode + 1);
 		userinfodao.zhuceyh(userinfo);// 插入表userinfo
 		logmsg = UserInfoAllService(userinfo.getUsername(), userinfo.getPwd()); // 判断是否插入成功
