@@ -23,4 +23,10 @@ public interface UserInfoDao
 
 	public int sel_count_userinfo(String username);//返回该用户名在数据库中的数量
 
+	//mybatis中有多个参数传入时需要加@Param注入,不然mybatis不能识别
+	public List<UserInfo> sel_userinfo_fy(@Param(value = "startPos")Integer startPos,@Param(value = "pageSize")  Integer pageSize ); //分页查询userinfo信息
+
+	public int getalluserinfo();//查询表userinfo共多少条数据
+
+
 }

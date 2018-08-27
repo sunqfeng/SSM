@@ -25,6 +25,19 @@
 	<select id="sel_count_userinfo"  resultType="int">
 		select count(username) from userinfo where username = #{username};
 	</select>
+
+	<!-- 查询userinfo表中共多少条数据-->
+	<select id="getalluserinfo"  resultType="int">
+		select count(*) from userinfo;
+	</select>
+	
+
+	<!--  分页查询userinfo信息 -->
+	<!-- 分页SQL语句 -->
+	<select id="sel_userinfo_fy" resultMap="UserInfo">
+		select * from userinfo 
+		limit #{startPos},#{pageSize}
+	</select>
 	
 
 	<!-- 插入用户注册的信息 -->

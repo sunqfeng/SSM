@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssm.model.LogMsg;
+import com.ssm.model.Student;
 import com.ssm.service.UserInfoService;
 
 /*****************************************************
@@ -138,6 +140,19 @@ public class UserInfoController
 			return "login"; // 注册成功后直接跳转到登录界面
 		}
 	}
+
+	/**
+	 * 
+	 * 查询userinfo的信息
+	 * @return
+	 */
+	@RequestMapping("/showe_userinfo")
+	public String showe_userinfo(HttpServletRequest request, Model model)
+	{
+		userinfoservice.Showuserinfofy(request,model);
+		return "cxuserinfo";
+	}
+
 
 	/**
 	 * 生成验证码
