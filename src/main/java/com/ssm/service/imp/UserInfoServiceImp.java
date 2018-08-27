@@ -36,19 +36,18 @@ public class UserInfoServiceImp implements UserInfoService
 	 */
 	@SuppressWarnings("null")
 	@Override
-	public LogMsg UserInfoAllService(String username,String pwd)
+	public LogMsg UserInfoAllService(String username, String pwd)
 	{
 		// TODO Auto-generated method stub
 		List<UserInfo> userinfo = new ArrayList<UserInfo>();
 		LogMsg logmsg = new LogMsg();
 
 		userinfo = userinfodao.UserInfoAll(username);
-		if( (userinfo !=null && !userinfo.isEmpty()) && 
-			(userinfo.get(0).getUsername().equals(username) && userinfo.get(0).getPwd().equals(pwd))) //判断用户以及密码是否正确
+		if ((userinfo != null && !userinfo.isEmpty())
+				&& (userinfo.get(0).getUsername().equals(username) && userinfo.get(0).getPwd().equals(pwd))) // 判断用户以及密码是否正确
 		{
 			logmsg.setCode("0");
-		}
-		else
+		} else
 		{
 			logmsg.setCode("1101");
 			logmsg.setMsg("用户不存在或密码错误");
@@ -58,27 +57,28 @@ public class UserInfoServiceImp implements UserInfoService
 
 	/**
 	 * 处理客户注册函数(插入表userinfo)
+	 * 
 	 * @user sqf
 	 * @param userinfo
-	 * @return 
+	 * @return
 	 */
 	@Override
-	public LogMsg zhuceyhservice( HttpServletRequest request )
+	public LogMsg zhuceyhservice(HttpServletRequest request)
 	{
 		// TODO Auto-generated method stub
 		UserInfo userinfo = new UserInfo();
 		LogMsg logmsg = new LogMsg();
 		int maxusercode = userinfodao.max_usercode_userinfo();// 求最大员工id号
 
-		userinfo.setUseriphoncode( request.getParameter("telephone") );
+		userinfo.setUseriphoncode(request.getParameter("telephone"));
 		userinfo.setPwd(request.getParameter("password"));
 		userinfo.setUsername(request.getParameter("name"));
 
 		userinfo.setUsercode(maxusercode + 1);
 		userinfodao.zhuceyh(userinfo);// 插入表userinfo
-		logmsg = UserInfoAllService(userinfo.getUsername(),userinfo.getPwd()); //判断是否插入成功
+		logmsg = UserInfoAllService(userinfo.getUsername(), userinfo.getPwd()); // 判断是否插入成功
 
-		return logmsg ;
+		return logmsg;
 	}
 
 }
