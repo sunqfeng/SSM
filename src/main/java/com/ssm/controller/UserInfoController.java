@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -21,24 +20,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssm.model.LogMsg;
-import com.ssm.model.Student;
 import com.ssm.service.UserInfoService;
+
+import net.sf.json.JSONObject;
+
 
 /*****************************************************
  * 
  * 该文件中的所有函数主要控制页面之间跳转，逻辑处理判断尽量放在service 层进行处理
  * 
  * @author sunqifeng
+ * @param <var>
  *
  *****************************************************/
 
 @Controller
 @RequestMapping("/UserInfoControl")
-public class UserInfoController
+public class UserInfoController<var>
 {
 
 	// 定义生成图片的变量
-	private String code; //全局变量保存验证码
+	private String code; // 全局变量保存验证码
 	private int width = 90;// 定义图片的width
 	private int height = 20;// 定义图片的height
 	private int codeCount = 4;// 定义图片上显示验证码的个数
@@ -48,9 +50,9 @@ public class UserInfoController
 	char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
 			'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-
 	@Autowired /* 自动注入，这样下面 的 userinfoservice 就可以调用相应的函数了，否则你需要new UserInfoService的对象 */
 	private UserInfoService userinfoservice;
+
 	/**
 	 * 转向登陆页
 	 * 
@@ -90,7 +92,7 @@ public class UserInfoController
 		String pwd = request.getParameter("pwd");
 		String yzm = request.getParameter("yzm");
 
-		if( !yzm.equalsIgnoreCase(code) ) //判断验证码是否正确
+		if (!yzm.equalsIgnoreCase(code)) // 判断验证码是否正确
 		{
 			logmsg.setCode("1102");
 			logmsg.setMsg("验证码错误");
@@ -119,10 +121,9 @@ public class UserInfoController
 	public String zhuceyh(HttpServletRequest request, Model model)
 	{
 		LogMsg logmsg = new LogMsg();
-		//鉴于前端水平有限,逻辑判断都放在后台了 ==!
-		if(request.getParameter("telephone") == null ||
-			request.getParameter("password") == null ||
-			request.getParameter("name") == null )
+		// 鉴于前端水平有限,逻辑判断都放在后台了 ==!
+		if (request.getParameter("telephone") == null || request.getParameter("password") == null
+				|| request.getParameter("name") == null)
 		{
 			logmsg.setCode("1101");
 			logmsg.setMsg("为空时直接跳转到注册原始页面");
@@ -132,10 +133,9 @@ public class UserInfoController
 		logmsg = userinfoservice.zhuceyhservice(request);// 注册操作(姓名、密码插入表userinfo)
 		if (!logmsg.getCode().equals("0"))
 		{
-			model.addAttribute("logmsg", logmsg); //报文信息返回前台
-			return "zhuce";//注册失败则重新跳转到注册界面
-		} 
-		else
+			model.addAttribute("logmsg", logmsg); // 报文信息返回前台
+			return "zhuce";// 注册失败则重新跳转到注册界面
+		} else
 		{
 			return "login"; // 注册成功后直接跳转到登录界面
 		}
@@ -144,25 +144,42 @@ public class UserInfoController
 	/**
 	 * 
 	 * 查询userinfo的信息
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/showe_userinfo")
 	public String showe_userinfo(HttpServletRequest request, Model model)
 	{
-		userinfoservice.Showuserinfofy(request,model);
+		userinfoservice.Showuserinfofy(request, model);
 		return "cxuserinfo";
 	}
 
+	@RequestMapping("/add_userinfo")
+	public String add_userinfo(HttpServletRequest request,HttpServletResponse response ,Model model)
+	{
+//		JSONObject jsonObject = new JSONObject();  //创建Json对象
+//		jsonObject.put("Name", "会计");         //设置Json对象的属性
+//		jsonObject.put("ParentName", "财务");
+//		jsonObject.put("Level", "1");
+//		jsonObject.put("Desc", "wollll");
+//		jsonObject.put("total", 1);
+//		jsonObject.put("rows", 1);
+//
+//		response.getWriter().write(jsonObject.toString());
+		return "adduserinfo";
+
+	}
 
 	/**
 	 * 生成验证码
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping("/yzm")
-	public void yzm( HttpServletRequest request,HttpServletResponse resp,Model model ) throws IOException
+	public void yzm(HttpServletRequest request, HttpServletResponse resp, Model model) throws IOException
 	{
 		// 定义图像buffer
 		BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -210,7 +227,7 @@ public class UserInfoController
 		// 将四位数字的验证码保存到Session中。
 		HttpSession session = request.getSession();
 		session.setAttribute("code", randomCode.toString());
-		code = randomCode.toString();//生成验证码
+		code = randomCode.toString();// 生成验证码
 
 		// 禁止图像缓存。
 		resp.setHeader("Pragma", "no-cache");

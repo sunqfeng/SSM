@@ -13,7 +13,7 @@
 <body>
 
 		<div>
-           <table  class="table table-bordered">
+           <table  class="class="table-bordered" >
             <tr>
             	<th>姓名</th>
                 <th>电话</th>
