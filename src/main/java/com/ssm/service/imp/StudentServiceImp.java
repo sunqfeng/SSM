@@ -52,6 +52,8 @@ public class StudentServiceImp implements StudentService
 		// TODO Auto-generated method stub
 
 		String pageNow = request.getParameter("pageNow");/* 获取当前页 */
+		//add by sqf for 新增一个helloworld日志
+		System.out.println("hello,world");
 
 		Page page = null;/* 分页工具类 */
 
