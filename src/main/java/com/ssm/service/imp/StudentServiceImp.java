@@ -1,5 +1,10 @@
 package com.ssm.service.imp;
 
+/*
+ * 2022年5月23日20:52:39
+ * sqf 新增一个简单的注解.
+ * 
+ */
 import java.util.ArrayList;
 import java.util.List;
 
